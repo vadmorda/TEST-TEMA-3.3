@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Test 3 - La vida urbana en la Edad Media</title>
+<style>
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+            "Segoe UI", Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at 0% 0%, #38bdf8 0, transparent 45%),
+                    radial-gradient(circle at 100% 100%, #a855f7 0, transparent 45%),
+                    radial-gradient(circle at 0% 100%, #22c55e 0, transparent 40%),
+                    #020617;
+        color: #0f172a;
+    }
+
+    .shell {
+        width: 100%;
+        max-width: 900px;
+        padding: 20px;
+    }
+
+    .card {
+        position: relative;
+        background: rgba(15, 23, 42, 0.82);
+        border-radius: 24px;
+        padding: 24px 26px 22px;
+        box-shadow: 0 22px 60px rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        backdrop-filter: blur(18px);
+        color: #e5e7eb;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.18), transparent 55%),
+                    radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.18), transparent 55%);
+        opacity: 0.9;
+        pointer-events: none;
+    }
+
+    .card-inner {
+        position: relative;
+        z-index: 1;
+    }
+
+    h1 {
+        margin: 0 0 3px;
+        text-align: center;
+        font-size: 1.45rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: #f9fafb;
+    }
+
+    .tagline {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #9ca3af;
+        margin-bottom: 16px;
+    }
+
+    .pill-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+        font-size: 0.8rem;
+        color: #9ca3af;
+    }
+    .pill {
+        padding: 5px 11px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        background: rgba(15, 23, 42, 0.8);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .pill span.dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #22c55e;
+    }
+
+    .progress-wrap {
+        margin-bottom: 10px;
+    }
+    .progress-bar-bg {
+        width: 100%;
+        height: 9px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(55, 65, 81, 0.9);
+        overflow: hidden;
+    }
+    .progress-bar-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #22c55e, #38bdf8, #a855f7);
+        box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+        transition: width 0.28s ease;
+    }
+    .progress-label {
+        margin-top: 4px;
+        font-size: 0.78rem;
+        text-align: right;
+        color: #9ca3af;
+    }
+
+    .question-block {
+        margin-top: 12px;
+    }
+
+    .question-text {
+        margin-bottom: 12px;
+    }
+    .q-es {
+        display: block;
+        font-size: 1.02rem;
+        font-weight: 600;
+        color: #e5e7eb;
+        margin-bottom: 3px;
+    }
+    .q-ua {
+        display: block;
+        font-size: 0.94rem;
+        font-style: italic;
+        color: #cbd5f5;
+        opacity: 0.9;
+    }
+
+    .options {
+        margin-top: 10px;
+    }
+
+    .option {
+        border-radius: 14px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        padding: 9px 11px 8px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        cursor: pointer;
+        background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.18), transparent 60%);
+        transition: border-color 0.15s ease, transform 0.05s ease, background 0.15s ease;
+    }
+    .option:hover {
+        border-color: #38bdf8;
+        transform: translateY(-1px);
+        background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.22), transparent 65%);
+    }
+    .option input {
+        margin-top: 4px;
+        accent-color: #38bdf8;
+        cursor: pointer;
+    }
+    .option-text {
+        font-size: 0.95rem;
+        color: #e5e7eb;
+    }
+    .option-text .es {
+        display: block;
+        font-weight: 500;
+    }
+    .option-text .ua {
+        display: block;
+        font-size: 0.9rem;
+        font-style: italic;
+        color: #cbd5f5;
+        opacity: 0.95;
+        margin-top: 2px;
+    }
+
+    .short-answer {
+        width: 100%;
+        margin-top: 8px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        background: rgba(15, 23, 42, 0.8);
+        color: #e5e7eb;
+        font-size: 0.97rem;
+        outline: none;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .short-answer::placeholder {
+        color: #6b7280;
+    }
+    .short-answer:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.55);
+        background: rgba(15, 23, 42, 0.95);
+    }
+
+    .nav-row {
+        margin-top: 18px;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .btn {
+        border-radius: 999px;
+        border: none;
+        padding: 9px 18px;
+        font-size: 0.92rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: transform 0.07s ease, box-shadow 0.2s ease, background 0.15s ease, color 0.15s ease;
+        white-space: nowrap;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #38bdf8, #6366f1);
+        color: #0f172a;
+        box-shadow: 0 14px 30px rgba(56, 189, 248, 0.45);
+    }
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 40px rgba(56, 189, 248, 0.6);
+        background: linear-gradient(135deg, #22c55e, #6366f1);
+    }
+
+    .btn-ghost {
+        background: transparent;
+        color: #e5e7eb;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+    .btn-ghost:hover {
+        background: rgba(15, 23, 42, 0.85);
+        transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+        opacity: 0.4;
+        cursor: default;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .hint {
+        margin-top: 6px;
+        font-size: 0.78rem;
+        color: #9ca3af;
+    }
+
+    .hidden { display: none; }
+
+    #result-card h2 {
+        font-size: 1.3rem;
+    }
+
+    .summary {
+        margin-top: 10px;
+        font-size: 0.96rem;
+        color: #e5e7eb;
+    }
+
+    .summary strong {
+        color: #a5b4fc;
+    }
+
+    .list-fails {
+        margin-top: 12px;
+        max-height: 220px;
+        overflow-y: auto;
+        padding-right: 6px;
+        font-size: 0.9rem;
+        color: #e5e7eb;
+    }
+
+    .list-fails li {
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px dashed rgba(148, 163, 184, 0.45);
+    }
+
+    .list-fails .es {
+        display: block;
+        font-weight: 500;
+    }
+    .list-fails .ua {
+        display: block;
+        font-style: italic;
+        color: #cbd5f5;
+        margin-top: 2px;
+    }
+
+    .retry-row {
+        margin-top: 16px;
+        text-align: center;
+    }
+
+    @media (max-width: 640px) {
+        .card {
+            padding: 18px 16px 16px;
+            border-radius: 18px;
+        }
+        h1 {
+            font-size: 1.2rem;
+        }
+        .nav-row {
+            flex-direction: column-reverse;
+        }
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        .progress-label {
+            text-align: left;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="shell">
+
+    <!-- TARJETA DEL TEST -->
+    <div id="test-card" class="card">
+        <div class="card-inner">
+            <h1>Test 3 · La vida urbana en la Edad Media</h1>
+            <div class="tagline">Geografía e Historia · Español 🇪🇸 · Українська 🇺🇦</div>
+
+            <div class="pill-row">
+                <div class="pill">
+                    <span class="dot"></span>
+                    <span>Bloque 3 · Ciudades medievales</span>
+                </div>
+                <div class="pill">
+                    <span>Modo práctica</span>
+                </div>
+            </div>
+
+            <div class="progress-wrap">
+                <div class="progress-bar-bg">
+                    <div id="progress-bar" class="progress-bar-fill"></div>
+                </div>
+                <div id="progress-label" class="progress-label"></div>
+            </div>
+
+            <div id="question-container" class="question-block"></div>
+        </div>
+    </div>
+
+    <!-- TARJETA DE RESULTADOS -->
+    <div id="result-card" class="card hidden">
+        <div class="card-inner" id="result-content"></div>
+    </div>
+</div>
+
+<script>
+// -----------------------------
+// PREGUNTAS TEST 3 – Vida urbana
+// -----------------------------
+const preguntas = [
+    {
+        tipo: "multi",
+        es: "¿Entre qué siglos se produjo el renacimiento urbano en Europa?",
+        ua: "Між якими століттями відбулося міське відродження в Європі?",
+        opciones: [
+            { es: "Entre los siglos IX y X", ua: "Між IX і X ст." },           // 0
+            { es: "Entre los siglos XI y XIII", ua: "Між XI і XIII ст." },     // 1 ✔
+            { es: "Entre los siglos XIV y XV", ua: "Між XIV і XV ст." }        // 2
+        ],
+        correcta: 1
+    },
+    {
+        tipo: "multi",
+        es: "¿Cuál fue una causa del crecimiento de las ciudades?",
+        ua: "Яка була однією з причин зростання міст?",
+        opciones: [
+            { es: "Las nuevas técnicas agrícolas necesitaban menos mano de obra", ua: "Нові сільськогосподарські техніки потребували менше робочої сили" }, // 0 ✔
+            { es: "Las ciudades prohibieron el comercio", ua: "Міста заборонили торгівлю" },                                                                // 1
+            { es: "Se destruyeron los caminos", ua: "Були зруйновані шляхи" }                                                                              // 2
+        ],
+        correcta: 0
+    },
+    {
+        tipo: "multi",
+        es: "¿Qué ocurría con los siervos que vivían más de un año en una ciudad?",
+        ua: "Що ставалося із селянами-невільниками, які прожили в місті більше року?",
+        opciones: [
+            { es: "Seguían siendo siervos", ua: "Вони залишалися невільниками" },                          // 0
+            { es: "Pasaban a ser libres", ua: "Вони ставали вільними" },                                   // 1 ✔
+            { es: "Se convertían en nobles", ua: "Вони ставали шляхтою" }                                  // 2
+        ],
+        correcta: 1
+    },
+    {
+        tipo: "multi",
+        es: "Las ciudades medievales se convirtieron en centros...",
+        ua: "Середньовічні міста стали центрами...",
+        opciones: [
+            { es: "Religiosos, políticos y económicos", ua: "Релігійними, політичними та економічними" },  // 0 ✔
+            { es: "Solo militares", ua: "Лише військовими" },                                               // 1
+            { es: "Solo agrícolas", ua: "Лише сільськогосподарськими" }                                     // 2
+        ],
+        correcta: 0
+    },
+    {
+        tipo: "multi",
+        es: "¿Qué era el fuero de una ciudad?",
+        ua: "Що таке міський фуеро?",
+        opciones: [
+            { es: "Un tipo de impuesto urbano", ua: "Вид міського податку" },                             // 0
+            { es: "Un documento con derechos y privilegios concedido por el rey", ua: "Документ із правами та привілеями, наданими королем" }, // 1 ✔
+            { es: "Una muralla defensiva", ua: "Оборонний мур" }                                           // 2
+        ],
+        correcta: 1
+    },
+    {
+        tipo: "multi",
+        es: "¿Cómo se llamaba el órgano de gobierno de la ciudad?",
+        ua: "Як називався орган міського самоврядування?",
+        opciones: [
+            { es: "Ayuntamiento o concejo", ua: "Муніципалітет або рада" },   // 0 ✔
+            { es: "Parlamento europeo", ua: "Європейський парламент" },       // 1
+            { es: "Corte feudal", ua: "Феодальний двір" }                     // 2
+        ],
+        correcta: 0
+    },
+    {
+        tipo: "multi",
+        es: "¿Quiénes formaban la élite urbana?",
+        ua: "Хто належав до міської еліти?",
+        opciones: [
+            { es: "Campesinos sin tierras", ua: "Селяни без землі" },                                     // 0
+            { es: "Familias ricas de mercaderes, artesanos importantes y alto clero", ua: "Багаті родини купців, впливові ремісники та вище міське духовенство" }, // 1 ✔
+            { es: "Solo estudiantes y escribanos", ua: "Лише студенти й писарі" }                         // 2
+        ],
+        correcta: 1
+    },
+    {
+        tipo: "multi",
+        es: "¿Qué órdenes mendicantes surgieron en las ciudades?",
+        ua: "Які жебрацькі ордени з’явилися в містах?",
+        opciones: [
+            { es: "Franciscana y dominica", ua: "Францисканський та домініканський" }, // 0 ✔
+            { es: "Benedictina y cisterciense", ua: "Бенедиктинський та цистерціанський" }, // 1
+            { es: "Templaria y hospitalaria", ua: "Тамплієрський та госпітальєрський" } // 2
+        ],
+        correcta: 0
+    },
+    {
+        tipo: "multi",
+        es: "¿Cómo se llamaban los barrios donde vivían judíos y musulmanes?",
+        ua: "Як називалися квартали, де жили юдеї та мусульмани?",
+        opciones: [
+            { es: "Juderías y morerías", ua: "Юдейські та мавританські квартали" }, // 0 ✔
+            { es: "Castillos y aldeas", ua: "Замки та села" },                      // 1
+            { es: "Campos y huertas", ua: "Поля та городи" }                        // 2
+        ],
+        correcta: 0
+    },
+    {
+        tipo: "multi",
+        es: "¿Cuál era el centro de la vida urbana?",
+        ua: "Що було центром міського життя?",
+        opciones: [
+            { es: "La plaza del mercado", ua: "Ринкова площа" },              // 0 ✔
+            { es: "Las murallas exteriores", ua: "Зовнішні мури" },           // 1
+            { es: "Los cementerios", ua: "Кладовища" }                        // 2
+        ],
+        correcta: 0
+    },
+
+    // 5 CORTAS
+    {
+        tipo: "corta",
+        es: "¿Cómo se llamaban los habitantes de las ciudades?",
+        ua: "Як називалися мешканці міст?",
+        respuesta: "burgueses"
+    },
+    {
+        tipo: "corta",
+        es: "Escribe el nombre del documento con los derechos de la ciudad.",
+        ua: "Напиши назву документа з правами міста.",
+        respuesta: "fuero"
+    },
+    {
+        tipo: "corta",
+        es: "Escribe el nombre del órgano de gobierno urbano (una palabra).",
+        ua: "Напиши назву міського органу влади (одне слово).",
+        respuesta: "ayuntamiento"
+    },
+    {
+        tipo: "corta",
+        es: "Escribe el nombre de una orden mendicante mencionada en el texto.",
+        ua: "Напиши назву одного з жебрацьких орденів із тексту.",
+        respuesta: "franciscanos"
+    },
+    {
+        tipo: "corta",
+        es: "¿Cómo se llamaban los barrios donde vivían los judíos?",
+        ua: "Як називалися квартали, де жили юдеї?",
+        respuesta: "juderías"
+    }
+];
+
+// -----------------------------
+// LÓGICA: ORDEN ALEATORIO
+// -----------------------------
+let orden = [...preguntas.keys()];
+
+function barajar(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+}
+barajar(orden);
+
+let indice = 0; // posición dentro de 'orden'
+let respuestasUsuario = new Array(preguntas.length).fill(null);
+
+function actualizarProgreso() {
+    const barra = document.getElementById("progress-bar");
+    const label = document.getElementById("progress-label");
+    const porcentaje = ((indice + 1) / preguntas.length) * 100;
+    barra.style.width = porcentaje + "%";
+    label.textContent = `Pregunta ${indice + 1} de ${preguntas.length}`;
+}
+
+function renderPregunta() {
+    const cont = document.getElementById("question-container");
+    const idxPregunta = orden[indice];
+    const q = preguntas[idxPregunta];
+
+    actualizarProgreso();
+
+    let html = `
+        <div class="question-text">
+            <span class="q-es">${q.es}</span>
+            <span class="q-ua">${q.ua}</span>
+        </div>
+    `;
+
+    if (q.tipo === "multi") {
+        html += `<div class="options">`;
+        const respGuardada = respuestasUsuario[idxPregunta];
+        q.opciones.forEach((op, iOp) => {
+            const checked = respGuardada === iOp ? "checked" : "";
+            html += `
+                <label class="option">
+                    <input type="radio" name="resp" value="${iOp}" ${checked}>
+                    <div class="option-text">
+                        <span class="es">${op.es}</span>
+                        <span class="ua">${op.ua}</span>
+                    </div>
+                </label>
+            `;
+        });
+        html += `</div>`;
+    } else {
+        const valor = respuestasUsuario[idxPregunta] ?? "";
+        html += `
+            <input
+                id="short-answer"
+                class="short-answer"
+                type="text"
+                value="${valor}"
+                placeholder="Escribe tu respuesta · Напиши відповідь"
+            >
+            <div class="hint">1–2 palabras son suficientes · 1–2 слова достатньо</div>
+        `;
+    }
+
+    html += `
+        <div class="nav-row">
+            <button class="btn btn-ghost" onclick="anterior()" ${indice === 0 ? "disabled" : ""}>
+                ◀ Anterior
+            </button>
+            <button class="btn btn-primary" onclick="siguiente()">
+                ${indice === preguntas.length - 1 ? "Terminar test" : "Siguiente ▶"}
+            </button>
+        </div>
+    `;
+
+    cont.innerHTML = html;
+}
+
+function guardarRespuestaActual() {
+    const idxPregunta = orden[indice];
+    const q = preguntas[idxPregunta];
+
+    if (q.tipo === "multi") {
+        const marcada = document.querySelector("input[name='resp']:checked");
+        if (!marcada) return false;
+        respuestasUsuario[idxPregunta] = parseInt(marcada.value);
+        return true;
+    } else {
+        const input = document.getElementById("short-answer");
+        if (!input) return false;
+        const valor = input.value.trim();
+        if (valor === "") return false;
+        respuestasUsuario[idxPregunta] = valor;
+        return true;
+    }
+}
+
+function siguiente() {
+    if (!guardarRespuestaActual()) {
+        return; // no avanza si no responde
+    }
+    indice++;
+    if (indice >= preguntas.length) {
+        mostrarResultados();
+    } else {
+        renderPregunta();
+    }
+}
+
+function anterior() {
+    if (indice === 0) return;
+    indice--;
+    renderPregunta();
+}
+
+function mostrarResultados() {
+    const testCard = document.getElementById("test-card");
+    const resultCard = document.getElementById("result-card");
+    const resultContent = document.getElementById("result-content");
+
+    testCard.classList.add("hidden");
+    resultCard.classList.remove("hidden");
+
+    let correctas = 0;
+    const fallos = [];
+
+    preguntas.forEach((q, idx) => {
+        const resp = respuestasUsuario[idx];
+        if (resp === null) {
+            fallos.push(q);
+            return;
+        }
+        if (q.tipo === "multi") {
+            if (resp === q.correcta) correctas++;
+            else fallos.push(q);
+        } else {
+            const esperado = q.respuesta.toLowerCase().trim();
+            const dado = String(resp).toLowerCase().trim();
+            if (dado === esperado) correctas++;
+            else fallos.push(q);
+        }
+    });
+
+    const total = preguntas.length;
+    const errores = total - correctas;
+
+    let html = `
+        <h2>Resultados del test</h2>
+        <div class="summary">
+            ✅ Aciertos: <strong>${correctas}</strong><br>
+            ❌ Errores: <strong>${errores}</strong>
+        </div>
+    `;
+
+    if (fallos.length > 0) {
+        html += `<div class="summary" style="margin-top:10px;">
+            Preguntas que deberías repasar:
+        </div>
+        <ul class="list-fails">
+        `;
+        fallos.forEach(q => {
+            html += `
+                <li>
+                    <span class="es">${q.es}</span>
+                    <span class="ua">${q.ua}</span>
+                </li>
+            `;
+        });
+        html += `</ul>`;
+    }
+
+    html += `
+        <div class="retry-row">
+            <button class="btn btn-primary" onclick="location.reload()">
+                🔁 Volver a hacer el test
+            </button>
+        </div>
+    `;
+
+    resultContent.innerHTML = html;
+}
+
+// Iniciar
+renderPregunta();
+</script>
+</body>
+</html>
